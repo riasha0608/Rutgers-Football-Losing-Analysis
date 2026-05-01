@@ -1,0 +1,80 @@
+Player,Category,Stat,Value
+"Raymond, Antwan",Rushing,Attempts,244.0
+"Raymond, Antwan",Rushing,Yards,1241.0
+"Raymond, Antwan",Rushing,Average,5.1
+"Raymond, Antwan",Rushing,TD,13.0
+"Benjamin, Ja'shon",Rushing,Attempts,68.0
+"Benjamin, Ja'shon",Rushing,Yards,328.0
+"Benjamin, Ja'shon",Rushing,Average,4.8
+"Benjamin, Ja'shon",Rushing,TD,2.0
+"Campbell Jr., CJ",Rushing,Attempts,22.0
+"Campbell Jr., CJ",Rushing,Yards,119.0
+"Campbell Jr., CJ",Rushing,Average,5.4
+"Campbell Jr., CJ",Rushing,TD,0.0
+"Brown V, Samuel",Rushing,Attempts,16.0
+"Brown V, Samuel",Rushing,Yards,38.0
+"Brown V, Samuel",Rushing,Average,2.4
+"Brown V, Samuel",Rushing,TD,0.0
+"Guerrier, Edd",Rushing,Attempts,7.0
+"Guerrier, Edd",Rushing,Yards,25.0
+"Guerrier, Edd",Rushing,Average,3.6
+"Guerrier, Edd",Rushing,TD,0.0
+"Mitchell, Terrell",Rushing,Attempts,3.0
+"Mitchell, Terrell",Rushing,Yards,14.0
+"Mitchell, Terrell",Rushing,Average,4.7
+"Mitchell, Terrell",Rushing,TD,0.0
+"Ashenfelder, Sean",Rushing,Attempts,1.0
+"Ashenfelder, Sean",Rushing,Yards,-3.0
+"Ashenfelder, Sean",Rushing,Average,-3.0
+"Ashenfelder, Sean",Rushing,TD,0.0
+"Patel, Jai",Rushing,Attempts,1.0
+"Patel, Jai",Rushing,Yards,-3.0
+"Patel, Jai",Rushing,Average,-3.0
+"Patel, Jai",Rushing,TD,0.0
+"Surace, AJ",Rushing,Attempts,2.0
+"Surace, AJ",Rushing,Yards,-5.0
+"Surace, AJ",Rushing,Average,-2.5
+"Surace, AJ",Rushing,TD,0.0
+"Kaliakmanis, Athan",Rushing,Attempts,96.0
+"Kaliakmanis, Athan",Rushing,Yards,-26.0
+"Kaliakmanis, Athan",Rushing,Average,-0.3
+"Kaliakmanis, Athan",Rushing,TD,4.0
+"Kaliakmanis, Athan",Passing,Completions,229.0
+"Kaliakmanis, Athan",Passing,Attempts,368.0
+"Kaliakmanis, Athan",Passing,Interceptions,7.0
+"Kaliakmanis, Athan",Passing,Yards,3124.0
+"Kaliakmanis, Athan",Passing,TD,20.0
+"Surace, AJ",Passing,Completions,4.0
+"Surace, AJ",Passing,Attempts,9.0
+"Surace, AJ",Passing,Interceptions,0.0
+"Surace, AJ",Passing,Yards,58.0
+"Surace, AJ",Passing,TD,2.0
+"Ashenfelder, Sean",Passing,Completions,1.0
+"Ashenfelder, Sean",Passing,Attempts,1.0
+"Ashenfelder, Sean",Passing,Interceptions,0.0
+"Ashenfelder, Sean",Passing,Yards,11.0
+"Ashenfelder, Sean",Passing,TD,0.0
+"Duff, KJ",Receiving,Receptions,60.0
+"Duff, KJ",Receiving,Yards,1084.0
+"Duff, KJ",Receiving,TD,7.0
+"Strong, Ian",Receiving,Receptions,52.0
+"Strong, Ian",Receiving,Yards,762.0
+"Strong, Ian",Receiving,TD,5.0
+"Sheffield, DT",Receiving,Receptions,44.0
+"Sheffield, DT",Receiving,Yards,577.0
+"Sheffield, DT",Receiving,TD,5.0
+"Fletcher Jr., Kenny",Receiving,Receptions,26.0
+"Fletcher Jr., Kenny",Receiving,Yards,236.0
+"Fletcher Jr., Kenny",Receiving,TD,0.0
+"Raymond, Antwan",Receiving,Receptions,18.0
+"Raymond, Antwan",Receiving,Yards,225.0
+"Raymond, Antwan",Receiving,TD,2.0
+"Black, Ben",Receiving,Receptions,8.0
+"Black, Ben",Receiving,Yards,119.0
+"Black, Ben",Receiving,TD,1.0
+"Weber, Colin",Receiving,Receptions,17.0
+"Weber, Colin",Receiving,Yards,102.0
+"Weber, Colin",Receiving,TD,0.0
+"Thomas III, Michael",Receiving,Receptions,1.0
+"Thomas III, Michael",Receiving,Yards,25.0
+"Thomas III, Michael",Receiving,TD,1.0
