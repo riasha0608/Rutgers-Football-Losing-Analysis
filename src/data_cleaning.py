@@ -67,9 +67,9 @@ def parse_down_conv(series):
 #clean_schedule
 df_schedule = pd.read_sql("SELECT * FROM clean_schedule", conn)
 
-df_schedule['Date']     = pd.to_datetime(df_schedule['Date'])
+df_schedule['Date'] = pd.to_datetime(df_schedule['Date'])
 df_schedule['Opponent'] = df_schedule['Opponent'].str.strip()
-df_schedule['Is_Win']   = (df_schedule['Win_Loss'] == 'W').astype(int)
+df_schedule['Is_Win'] = (df_schedule['Win_Loss'] == 'W').astype(int)
 
 df_schedule.to_sql('clean_schedule', conn, if_exists='replace', index=False)
 print(f"Good clean_schedule:                {df_schedule.shape[0]} rows, {df_schedule.shape[1]} cols")
@@ -79,30 +79,30 @@ df_team = pd.read_sql("SELECT * FROM raw_rutgers_team_stats_2025", conn)
 
 df_team['Metric'] = df_team['Metric'].str.strip()
 
-compound_mask  = df_team['Rutgers'].str.contains('-', na=False)
-simple_rows    = df_team[~compound_mask].copy()
+compound_mask = df_team['Rutgers'].str.contains('-', na=False)
+simple_rows = df_team[~compound_mask].copy()
 compound_rows  = df_team[compound_mask].copy()
 
-simple_rows['Rutgers']   = pd.to_numeric(simple_rows['Rutgers'],   errors='coerce')
+simple_rows['Rutgers'] = pd.to_numeric(simple_rows['Rutgers'],   errors='coerce')
 simple_rows['Opponents'] = pd.to_numeric(simple_rows['Opponents'], errors='coerce')
 
 compound_suffix_map = {
-    'Fumbles-Lost':         ('Fumbles',    'FumblesLost'),
-    'Penalties-Yards':      ('Penalties',  'PenaltyYards'),
-    'Punts-Yards':          ('Punts',      'PuntYards'),
-    'Kickoffs-Yards':       ('Kickoffs',   'KickoffYards'),
-    '3rd Down Conversions': ('3rdMade',    '3rdAtt'),
-    '4th Down Conversions': ('4thMade',    '4thAtt'),
-    'Sacks By-Yards':       ('Sacks',      'SackYards'),
-    'Field Goals-Attempts': ('FGMade',     'FGAtt'),
+    'Fumbles-Lost': ('Fumbles', 'FumblesLost'),
+    'Penalties-Yards': ('Penalties', 'PenaltyYards'),
+    'Punts-Yards': ('Punts', 'PuntYards'),
+    'Kickoffs-Yards': ('Kickoffs', 'KickoffYards'),
+    '3rd Down Conversions': ('3rdMade', '3rdAtt'),
+    '4th Down Conversions': ('4thMade', '4thAtt'),
+    'Sacks By-Yards': ('Sacks', 'SackYards'),
+    'Field Goals-Attempts': ('FGMade', 'FGAtt'),
 }
 
 expanded_records = []
 for _, row in compound_rows.iterrows():
-    metric    = row['Metric']
+    metric = row['Metric']
     rut_parts = str(row['Rutgers']).split('-')
     opp_parts = str(row['Opponents']).split('-')
-    suffixes  = compound_suffix_map.get(metric, ('Part1', 'Part2'))
+    suffixes = compound_suffix_map.get(metric, ('Part1', 'Part2'))
     expanded_records.append({'Metric': f"{metric}_{suffixes[0]}", 'Rutgers': float(rut_parts[0]), 'Opponents': float(opp_parts[0])})
     expanded_records.append({'Metric': f"{metric}_{suffixes[1]}", 'Rutgers': float(rut_parts[1]), 'Opponents': float(opp_parts[1])})
 
@@ -116,19 +116,19 @@ df_combined = pd.read_sql("SELECT * FROM raw_combined_football_stats", conn)
 
 df_combined['Opponent'] = df_combined['Opponent'].str.strip()
 
-df_combined['Rutgers_Score']      = df_combined['Score'].str.split('-').str[0].astype(int)
-df_combined['Opponent_Score']     = df_combined['Score'].str.split('-').str[1].astype(int)
-df_combined['Win_Loss']           = df_combined.apply(lambda r: 'W' if r['Rutgers_Score'] > r['Opponent_Score'] else 'L', axis=1)
-df_combined['Is_Win']             = (df_combined['Win_Loss'] == 'W').astype(int)
+df_combined['Rutgers_Score'] = df_combined['Score'].str.split('-').str[0].astype(int)
+df_combined['Opponent_Score'] = df_combined['Score'].str.split('-').str[1].astype(int)
+df_combined['Win_Loss'] = df_combined.apply(lambda r: 'W' if r['Rutgers_Score'] > r['Opponent_Score'] else 'L', axis=1)
+df_combined['Is_Win'] = (df_combined['Win_Loss'] == 'W').astype(int)
 df_combined['Point_Differential'] = df_combined['Rutgers_Score'] - df_combined['Opponent_Score']
 
 for col, rut_col, opp_col in [
-    ('Total',        'Rutgers_FirstDowns',     'Opp_FirstDowns'),
-    ('Rush',         'Rutgers_RushFirstDowns', 'Opp_RushFirstDowns'),
-    ('Pass',         'Rutgers_PassFirstDowns', 'Opp_PassFirstDowns'),
-    ('Pen',          'Rutgers_PenFirstDowns',  'Opp_PenFirstDowns'),
-    ('Return-Yards', 'Rutgers_ReturnYards',    'Opp_ReturnYards'),
-    ('Turnovers',    'Rutgers_Turnovers',      'Opp_Turnovers'),
+    ('Total', 'Rutgers_FirstDowns', 'Opp_FirstDowns'),
+    ('Rush', 'Rutgers_RushFirstDowns', 'Opp_RushFirstDowns'),
+    ('Pass', 'Rutgers_PassFirstDowns', 'Opp_PassFirstDowns'),
+    ('Pen', 'Rutgers_PenFirstDowns',  'Opp_PenFirstDowns'),
+    ('Return-Yards', 'Rutgers_ReturnYards', 'Opp_ReturnYards'),
+    ('Turnovers', 'Rutgers_Turnovers', 'Opp_Turnovers'),
 ]:
     df_combined[rut_col], df_combined[opp_col] = split_pair(df_combined[col], int)
 
@@ -143,63 +143,63 @@ for col, rut_col, opp_col in [
 
 yards_split = df_combined['Yards'].str.replace(' ', '').str.split('/', expand=True)
 df_combined['Rutgers_PassYards'] = yards_split[0].astype(int)
-df_combined['Opp_PassYards']     = yards_split[1].astype(int)
+df_combined['Opp_PassYards'] = yards_split[1].astype(int)
 
 att_yards = df_combined['Att-Yards'].str.split(' / ', expand=True)
 rut_ay = att_yards[0].str.split('-', expand=True)
 opp_ay = att_yards[1].str.split('-', expand=True)
-df_combined['Rutgers_RushAtt']   = rut_ay[0].astype(int)
+df_combined['Rutgers_RushAtt'] = rut_ay[0].astype(int)
 df_combined['Rutgers_RushYards'] = rut_ay[1].astype(int)
-df_combined['Opp_RushAtt']       = opp_ay[0].astype(int)
-df_combined['Opp_RushYards']     = opp_ay[1].astype(int)
+df_combined['Opp_RushAtt'] = opp_ay[0].astype(int)
+df_combined['Opp_RushYards'] = opp_ay[1].astype(int)
 
 plays_yards = df_combined['Plays-Yards'].str.split(' / ', expand=True)
 rut_py = plays_yards[0].str.split('-', expand=True)
 opp_py = plays_yards[1].str.split('-', expand=True)
 df_combined['Rutgers_TotalPlays'] = rut_py[0].astype(int)
 df_combined['Rutgers_TotalYards'] = rut_py[1].astype(int)
-df_combined['Opp_TotalPlays']     = opp_py[0].astype(int)
-df_combined['Opp_TotalYards']     = opp_py[1].astype(int)
+df_combined['Opp_TotalPlays'] = opp_py[0].astype(int)
+df_combined['Opp_TotalYards'] = opp_py[1].astype(int)
 
 comp_att = df_combined['Comp-Att-Int'].str.split(' / ', expand=True)
 rut_cai = comp_att[0].str.split('-', expand=True)
 opp_cai = comp_att[1].str.split('-', expand=True)
-df_combined['Rutgers_Comp']         = rut_cai[0].astype(int)
-df_combined['Rutgers_Att']          = rut_cai[1].astype(int)
+df_combined['Rutgers_Comp'] = rut_cai[0].astype(int)
+df_combined['Rutgers_Att'] = rut_cai[1].astype(int)
 df_combined['Rutgers_Interceptions'] = rut_cai[2].astype(int)
-df_combined['Opp_Comp']             = opp_cai[0].astype(int)
-df_combined['Opp_Att']              = opp_cai[1].astype(int)
-df_combined['Opp_Interceptions']    = opp_cai[2].astype(int)
+df_combined['Opp_Comp'] = opp_cai[0].astype(int)
+df_combined['Opp_Att'] = opp_cai[1].astype(int)
+df_combined['Opp_Interceptions'] = opp_cai[2].astype(int)
 
 (df_combined['Rutgers_3rdMade'], df_combined['Rutgers_3rdAtt'],
- df_combined['Opp_3rdMade'],     df_combined['Opp_3rdAtt']) = parse_down_conv(df_combined['ThirdDownConversions'])
+ df_combined['Opp_3rdMade'], df_combined['Opp_3rdAtt']) = parse_down_conv(df_combined['ThirdDownConversions'])
 
 (df_combined['Rutgers_4thMade'], df_combined['Rutgers_4thAtt'],
- df_combined['Opp_4thMade'],     df_combined['Opp_4thAtt']) = parse_down_conv(df_combined['FourthDownConversions'])
+ df_combined['Opp_4thMade'], df_combined['Opp_4thAtt']) = parse_down_conv(df_combined['FourthDownConversions'])
 
 df_combined['Rutgers_3rdPct'] = (df_combined['Rutgers_3rdMade'] / df_combined['Rutgers_3rdAtt'].replace(0, None)).round(3)
-df_combined['Opp_3rdPct']     = (df_combined['Opp_3rdMade']     / df_combined['Opp_3rdAtt'].replace(0, None)).round(3)
+df_combined['Opp_3rdPct'] = (df_combined['Opp_3rdMade']     / df_combined['Opp_3rdAtt'].replace(0, None)).round(3)
 
 punts = df_combined['PuntsAvg'].str.split(' / ', expand=True)
 rut_p = punts[0].str.split('-', expand=True)
 opp_p = punts[1].str.split('-', expand=True)
-df_combined['Rutgers_Punts']   = rut_p[0].astype(int)
+df_combined['Rutgers_Punts'] = rut_p[0].astype(int)
 df_combined['Rutgers_PuntAvg'] = rut_p[1].apply(safe_float)
-df_combined['Opp_Punts']       = opp_p[0].astype(int)
-df_combined['Opp_PuntAvg']     = opp_p[1].apply(safe_float)
+df_combined['Opp_Punts'] = opp_p[0].astype(int)
+df_combined['Opp_PuntAvg'] = opp_p[1].apply(safe_float)
 
 pen = df_combined['PenaltiesYards'].str.split(' / ', expand=True)
 rut_pen = pen[0].str.split('-', expand=True)
 opp_pen = pen[1].str.split('-', expand=True)
-df_combined['Rutgers_Penalties']    = rut_pen[0].astype(int)
+df_combined['Rutgers_Penalties'] = rut_pen[0].astype(int)
 df_combined['Rutgers_PenaltyYards'] = rut_pen[1].astype(int)
-df_combined['Opp_Penalties']        = opp_pen[0].astype(int)
-df_combined['Opp_PenaltyYards']     = opp_pen[1].astype(int)
+df_combined['Opp_Penalties'] = opp_pen[0].astype(int)
+df_combined['Opp_PenaltyYards'] = opp_pen[1].astype(int)
 
 top_split = df_combined['TimeOfPossession'].str.split(' / ', expand=True)
 df_combined['Rutgers_TOP_sec'] = top_split[0].apply(top_to_seconds)
-df_combined['Opp_TOP_sec']     = top_split[1].apply(top_to_seconds)
-df_combined['TOP_Margin_sec']  = df_combined['TopMargin'].apply(margin_to_seconds)
+df_combined['Opp_TOP_sec'] = top_split[1].apply(top_to_seconds)
+df_combined['TOP_Margin_sec'] = df_combined['TopMargin'].apply(margin_to_seconds)
 
 raw_cols = [
     'Score', 'Total', 'Rush', 'Pass', 'Pen', 'Att-Yards', 'Comp-Att-Int',
@@ -216,7 +216,7 @@ print(f"Good clean_combined_football_stats: {df_combined.shape[0]} rows, {df_com
 df_players = pd.read_sql("SELECT * FROM clean_player_dataset", conn)
 
 df_players['Player'] = df_players['Player'].apply(standardize_player_name)
-df_players['Unit']   = df_players['Unit'].str.strip().str.title()
+df_players['Unit'] = df_players['Unit'].str.strip().str.title()
 df_players['Is_Offense'] = (df_players['Unit'] == 'Offense').astype(int)
 df_players['Is_Defense'] = (df_players['Unit'] == 'Defense').astype(int)
 
@@ -252,7 +252,7 @@ print(f"Good clean_rushing:                 {df_rushing.shape[0]} rows, {df_rush
 #clean_combined_player_stats
 df_cps = pd.read_sql("SELECT * FROM raw_rutgers_2025_combined_player_stats", conn)
 
-df_cps['Player']   = df_cps['Player'].apply(standardize_player_name)
+df_cps['Player'] = df_cps['Player'].apply(standardize_player_name)
 df_cps['Category'] = df_cps['Category'].str.strip().str.title()
 
 category_dummies = pd.get_dummies(df_cps['Category'], prefix='Cat').astype(int)
