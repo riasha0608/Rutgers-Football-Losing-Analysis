@@ -10,7 +10,7 @@ QUERIES = {
     "ordered_losses_data": """
         SELECT 
             s.Opponent,
-            s.Win_Loss,
+            f.Win_Loss,
             s.Days_Rest,
             f.YPP_Diff,
             f.Penalty_Yds_Diff,
@@ -33,7 +33,7 @@ QUERIES = {
             TD_Share,
             Team_Yards,
             Team_TD
-        FROM advanced_player_stats
+        FROM pivoted_combined_player_stats
         WHERE Yardage_Share > 0.40
         ORDER BY Yardage_Share DESC;
     """,

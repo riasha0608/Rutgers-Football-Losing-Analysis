@@ -45,6 +45,10 @@ df_team = pd.read_sql("SELECT * FROM clean_team_stats", conn)
 conn.close()
 
 # use clean_schedule as ground-truth W/L
+df_schedule['Win_Loss'] = df_schedule['Result'].str.strip().str[0]
+df_schedule['Rutgers_Score'] = df_schedule['Result'].str.extract(r'(\d+)-').astype(int)
+df_schedule['Opponent_Score'] = df_schedule['Result'].str.extract(r'-(\d+)').astype(int)
+
 schedule_wl = df_schedule.set_index('Opponent')['Win_Loss'].to_dict()
 score_rut = df_schedule.set_index('Opponent')['Rutgers_Score'].to_dict()
 score_opp = df_schedule.set_index('Opponent')['Opponent_Score'].to_dict()
@@ -52,6 +56,7 @@ score_opp = df_schedule.set_index('Opponent')['Opponent_Score'].to_dict()
 df_games['Win_Loss'] = df_games['Opponent'].map(schedule_wl)
 df_games['Rutgers_Score'] = df_games['Opponent'].map(score_rut)
 df_games['Opponent_Score'] = df_games['Opponent'].map(score_opp)
+
 df_games['Is_Win'] = (df_games['Win_Loss'] == 'W').astype(int)
 df_games['Point_Diff'] = df_games['Rutgers_Score'] - df_games['Opponent_Score']
 df_games['TO_Diff'] = df_games['Opp_Turnovers'] - df_games['Rutgers_Turnovers']

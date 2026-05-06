@@ -65,11 +65,11 @@ def parse_down_conv(series):
     )
 
 #clean_schedule
-df_schedule = pd.read_sql("SELECT * FROM clean_schedule", conn)
+df_schedule = pd.read_sql("SELECT * FROM raw_rutgers_schedule_2025", conn)
 
 df_schedule['Date'] = pd.to_datetime(df_schedule['Date'])
 df_schedule['Opponent'] = df_schedule['Opponent'].str.strip()
-df_schedule['Is_Win'] = (df_schedule['Win_Loss'] == 'W').astype(int)
+df_schedule['Is_Win'] = (df_schedule['Result'].str.strip().str[0].eq('W')).astype(int)
 
 df_schedule.to_sql('clean_schedule', conn, if_exists='replace', index=False)
 print(f"Good clean_schedule:                {df_schedule.shape[0]} rows, {df_schedule.shape[1]} cols")
@@ -213,7 +213,7 @@ df_combined.to_sql('clean_combined_football_stats', conn, if_exists='replace', i
 print(f"Good clean_combined_football_stats: {df_combined.shape[0]} rows, {df_combined.shape[1]} cols")
 
 # clean_player_dataset
-df_players = pd.read_sql("SELECT * FROM clean_player_dataset", conn)
+df_players = pd.read_sql("SELECT * FROM raw_rutgers_2025_player_dataset", conn)
 
 df_players['Player'] = df_players['Player'].apply(standardize_player_name)
 df_players['Unit'] = df_players['Unit'].str.strip().str.title()
@@ -224,7 +224,7 @@ df_players.to_sql('clean_player_dataset', conn, if_exists='replace', index=False
 print(f"Good clean_player_dataset:          {df_players.shape[0]} rows, {df_players.shape[1]} cols")
 
 #clean_passing
-df_passing = pd.read_sql("SELECT * FROM clean_passing", conn)
+df_passing = pd.read_sql("SELECT * FROM raw_rutgers_passing_2025", conn)
 
 df_passing['Player'] = df_passing['Player'].apply(standardize_player_name)
 df_passing = df_passing.rename(columns={'INT': 'Interceptions'})
@@ -233,7 +233,7 @@ df_passing.to_sql('clean_passing', conn, if_exists='replace', index=False)
 print(f"Good clean_passing:                 {df_passing.shape[0]} rows, {df_passing.shape[1]} cols")
 
 # clean_receiving
-df_receiving = pd.read_sql("SELECT * FROM clean_receiving", conn)
+df_receiving = pd.read_sql("SELECT * FROM raw_rutgers_receiving_2025", conn)
 
 df_receiving['Player'] = df_receiving['Player'].apply(standardize_player_name)
 
@@ -241,7 +241,7 @@ df_receiving.to_sql('clean_receiving', conn, if_exists='replace', index=False)
 print(f"Good clean_receiving:               {df_receiving.shape[0]} rows, {df_receiving.shape[1]} cols")
 
 #clean_rushing
-df_rushing = pd.read_sql("SELECT * FROM clean_rushing", conn)
+df_rushing = pd.read_sql("SELECT * FROM raw_rutgers_rushing_2025", conn)
 
 df_rushing['Player'] = df_rushing['Player'].apply(standardize_player_name)
 df_rushing = df_rushing.rename(columns={'Avg': 'Avg_Yards'})
