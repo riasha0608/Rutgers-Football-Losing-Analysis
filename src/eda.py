@@ -4,38 +4,41 @@ import pandas as pd
 def run_eda():
     print("--- Starting Exploratory Data Analysis ---")
     
-    # 1. Pull the Master Analysis Table
-    # This is the table that joins schedule and team efficiency
-    df = run_query("master_analysis_table")
+    #getting query results from master table and storing it in dataframe
+    df_master_results = run_query("prediction_model_ready_table")
     
-    if df.empty:
+    #error checking step if no results returned from above query
+    if df_master_results.empty:
         print("Master table is empty. Check your SQL join logic.")
         return
 
-    # 2. Basic Descriptive Statistics
-    # This tells you the 'average' game for Rutgers
-    print("\n[1] Summary Statistics for All Games:")
-    print(df.describe().round(2))
+    #getting summary stats of table (aka across all games)
+    print("\n(1) Summary Statistics for All Games:")
+    #rounding for simple and easy view of the summary stats
+    print(df_master_results.describe().round(2))
 
-    # 3. Win vs. Loss Comparison
-    # This is huge. It shows you the average stats when they WIN vs when they LOSE.
-    print("\n[2] Comparison: Average Stats in Wins vs. Losses:")
-    # We group by the binary column we made (1 = Win, 0 = Loss)
-    comparison = df.groupby('Win_Loss_Binary').mean(numeric_only=True).round(3)
-    print(comparison)
+    #average stats of columns (features) in table for wins versus losses (grouping them by wins vs losses) to see the difference
+    #can help depict differences in features for wins vs losses and thus possible factors of losses
+    print("\n(2) Comparing the Average Statistics in Wins vs. Losses:")
+    #only calculating mean for numeric data cause not possible for categorical stuff
+    win_loss_comparison = df_master_results.groupby('Win_Loss_Binary').mean(numeric_only=True).round(3)
+    print(win_loss_comparison)
 
-    # 4. The Correlation Matrix
-    # This mathematically ranks which factors move the needle toward a Win (1)
-    print("\n[3] Correlation with Winning (Win_Loss_Binary):")
-    # We only care about how other columns relate to 'Win_Loss_Binary'
-    corr_matrix = df.corr(numeric_only=True)
-    winning_correlations = corr_matrix['Win_Loss_Binary'].sort_values(ascending=False)
-    print(winning_correlations)
+    #creating correlation matrix to see each feature's correlation to the y variable (win vs loss)
+    print("\n(3) Each x variable's (feature's) correlation with win vs loss:")
+    #making the actual correlation matrix and only getting win loss column since we only want features correlation with this variable
+    matrix_of_all_correlation_coefficients = df_master_results.corr(numeric_only=True)
+    correlation_to_winning = matrix_of_all_correlation_coefficients['Win_Loss_Binary'].sort_values(ascending=False)
+    #correlations stored from most correlated to least
+    print(correlation_to_winning)
 
-    # 5. Identifying the "Red Flags" (Strongest predictors of a Loss)
-    print("\n[4] Top 3 Key Performance Indicators (KPIs):")
-    # We look for the strongest positive or negative correlations (excluding itself)
-    kpis = winning_correlations[winning_correlations.index != 'Win_Loss_Binary']
+
+    print("\n(4) Top 3 Key Performance Indicators (KPIs):")
+    #looking at both strongly positive and strongly negative correlation to get most related to winning and most related to losing
+    #will help see what team is doing well to get wins and what team needs to work on when they face losses
+    kpis = correlation_to_winning[correlation_to_winning.index != 'Win_Loss_Binary']
+    #gives the factors and their correlations based on correlation matrix list for win loss column
+    #used iloc to get data by index location since location in list is what matters (i.e at top - most related to winnings)
     print(f"1. Most tied to Winning: {kpis.index[0]} ({kpis.iloc[0]:.2f})")
     print(f"2. Most tied to Losing: {kpis.index[-1]} ({kpis.iloc[-1]:.2f})")
 
